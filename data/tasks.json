@@ -1,0 +1,32 @@
+[
+ {
+  "id": 1,
+  "title": "купить хлеба",
+  "done": false
+ },
+ {
+  "id": 2,
+  "title": "помыть посуду",
+  "done": false
+ },
+ {
+  "id": 3,
+  "title": "изучать GO",
+  "done": false
+ },
+ {
+  "id": 4,
+  "title": "делать ошибки",
+  "done": false
+ },
+ {
+  "id": 5,
+  "title": "исправлять ошибки",
+  "done": false
+ },
+ {
+  "id": 6,
+  "title": "зарабатывать деньги",
+  "done": false
+ }
+]
