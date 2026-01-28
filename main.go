@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strconv"
 
 	"github.com/hanfkrokete/go-cli-todo/internal/storage"
 	"github.com/hanfkrokete/go-cli-todo/internal/task"
@@ -32,7 +33,7 @@ func main() {
 		tasks, _ := storage.Load(filePath)
 
 		newTask := task.Task{
-			ID:    len(tasks) + 1,
+			ID:    task.NextID(tasks),
 			Title: title,
 			Done:  false,
 		}
@@ -42,6 +43,37 @@ func main() {
 		storage.Save(filePath, tasks)
 
 		fmt.Println("✅ Task saved:", title)
+	case "done":
+
+		if len(os.Args) < 3 {
+			fmt.Println("Usage: todo done <id>")
+			return
+		}
+
+		id, err := strconv.Atoi(os.Args[2])
+		if err != nil {
+			fmt.Println("Invalid ID")
+			return
+		}
+
+		tasks, _ := storage.Load(filePath)
+
+		found := false
+
+		for i := range tasks {
+			if tasks[i].ID == id {
+				tasks[i].Done = true
+				found = true
+				fmt.Println("✅ Task marked done:", tasks[i].Title)
+				break
+			}
+		}
+		if !found {
+			fmt.Println("Task not found")
+			return
+		}
+
+		storage.Save(filePath, tasks)
 
 	case "list":
 		tasks, _ := storage.Load(filePath)
@@ -58,6 +90,40 @@ func main() {
 			}
 			fmt.Printf("  %s %d: %s\n", status, t.ID, t.Title)
 		}
+
+	case "delete":
+		if len(os.Args) < 3 {
+			fmt.Println("Usage: todo delete <id>")
+			return
+		}
+
+		id, err := strconv.Atoi(os.Args[2])
+		if err != nil {
+			fmt.Println("Invalid ID")
+			return
+		}
+
+		tasks, _ := storage.Load(filePath)
+		newTasks := make([]task.Task, 0)
+		found := false
+
+		for _, t := range tasks {
+			if t.ID == id {
+				found = true
+				continue
+			}
+			newTasks = append(newTasks, t)
+		}
+
+		if !found {
+			fmt.Println("Task not found")
+			return
+		}
+
+		storage.Save(filePath, newTasks)
+
+		fmt.Println("Task deleted:", id)
+
 	default:
 		fmt.Println("Unknown command:", command)
 	}

@@ -5,14 +5,9 @@
   "done": false
  },
  {
-  "id": 2,
-  "title": "помыть посуду",
-  "done": false
- },
- {
   "id": 3,
   "title": "изучать GO",
-  "done": false
+  "done": true
  },
  {
   "id": 4,
